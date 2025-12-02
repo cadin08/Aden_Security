@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="icon" type="image/png" href="https://images.vexels.com/media/users/3/189101/isolated/preview/693f7da0ef1625c6b281f1428a7ecdbb-fuegos-artificiales-de-2-anillos-degradado-verde.png?w=360">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Aden Security — Vault Premium (All-in-one)</title>
+
+<!-- QR lib (client-side). Replace with local copy for prod if required -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<div class="container"></div>
+<style>
+  .container {
+    --uib-size: 35px;
+    --uib-color: black;
+    --uib-speed: 1.5s;
+    --uib-dot-size: calc(var(--uib-size) * 0.4);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--uib-size);
+    width: var(--uib-size);
+    animation: rotate calc(var(--uib-speed) * 1.667) infinite linear;
+  }
+
+  .container::before,
+  .container::after {
+    content: '';
+    position: absolute;
+    height: var(--uib-dot-size);
+    width: var(--uib-dot-size);
+    border-radius: 50%;
+    background-color: var(--uib-color);
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+  }
+
+  .container::before {
+    animation: orbit var(--uib-speed) linear infinite;
+  }
+
+  .container::after {
+    animation: orbit var(--uib-speed) linear calc(var(--uib-speed) / -2) infinite;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes orbit {
+    0% {
+      transform: translateX(calc(var(--uib-size) * 0.25)) scale(0.73684);
+      opacity: 0.65;
+    }
+    5% {
+      transform: translateX(calc(var(--uib-size) * 0.235)) scale(0.684208);
+      opacity: 0.58;
+    }
+    10% {
+      transform: translateX(calc(var(--uib-size) * 0.182)) scale(0.631576);
+      opacity: 0.51;
+    }
+    15% {
+      transform: translateX(calc(var(--uib-size) * 0.129)) scale(0.578944);
+      opacity: 0.44;
+    }
+    20% {
+      transform: translateX(calc(var(--uib-size) * 0.076)) scale(0.526312);
+      opacity: 0.37;
+    }
+    25% {
+      transform: translateX(0%) scale(0.47368);
+      opacity: 0.3;
+    }
+    30% {
+      transform: translateX(calc(var(--uib-size) * -0.076)) scale(0.526312);
+      opacity: 0.37;
+    }
+    35% {
+      transform: translateX(calc(var(--uib-size) * -0.129)) scale(0.578944);
+      opacity: 0.44;
+    }
+    40% {
+      transform: translateX(calc(var(--uib-size) * -0.182)) scale(0.631576);
+      opacity: 0.51;
+    }
+    45% {
+      transform: translateX(calc(var(--uib-size) * -0.235)) scale(0.684208);
+      opacity: 0.58;
+    }
+    50% {
+      transform: translateX(calc(var(--uib-size) * -0.25)) scale(0.73684);
+      opacity: 0.65;
+    }
+    55% {
+      transform: translateX(calc(var(--uib-size) * -0.235)) scale(0.789472);
+      opacity: 0.72;
+    }
+    60% {
+      transform: translateX(calc(var(--uib-size) * -0.182)) scale(0.842104);
+      opacity: 0.79;
+    }
+    65% {
+      transform: translateX(calc(var(--uib-size) * -0.129)) scale(0.894736);
+      opacity: 0.86;
+    }
+    70% {
+      transform: translateX(calc(var(--uib-size) * -0.076)) scale(0.947368);
+      opacity: 0.93;
+    }
+    75% {
+      transform: translateX(0%) scale(1);
+      opacity: 1;
+    }
+    80% {
+      transform: translateX(calc(var(--uib-size) * 0.076)) scale(0.947368);
+      opacity: 0.93;
+    }
+    85% {
+      transform: translateX(calc(var(--uib-size) * 0.129)) scale(0.894736);
+      opacity: 0.86;
+    }
+    90% {
+      transform: translateX(calc(var(--uib-size) * 0.182)) scale(0.842104);
+      opacity: 0.79;
+    }
+    95% {
+      transform: translateX(calc(var(--uib-size) * 0.235)) scale(0.789472);
+      opacity: 0.72;
+    }
+    100% {
+      transform: translateX(calc(var(--uib-size) * 0.25)) scale(0.73684);
+      opacity: 0.65;
+    }
+  }
+</style>
+<style>
+#global-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(35px) saturate(200%);
+  -webkit-backdrop-filter: blur(35px) saturate(200%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.4s ease;
+}
+.container {
+  --uib-size: 35px;
+  --uib-color: white;
+  --uib-speed: 1.5s;
+  --uib-dot-size: calc(var(--uib-size) * 0.4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: rotate calc(var(--uib-speed) * 1.667) infinite linear;
+}
+/* ...resto de tu animación... */
+  /* ---------- Apple iOS-like glass theme (fullscreen, scroll) ---------- */
+  :root{
+    --bg-1:#071018;
+    --bg-2:#0c1318;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.06);
+    --muted: #9fb3ac;
+    --accent-start:#00d07a;
+    --accent-end:#00b86c;
+    --radius:20px;
+    --card-radius:28px;
+    --shadow: 0 20px 60px rgba(2,6,23,0.6);
+    --glass-strong: rgba(255,255,255,0.10);
+    --maxwidth:1200px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, Roboto, "Helvetica Neue", Arial;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#e9f3ef; -webkit-font-smoothing:antialiased;}
+  /* Page layout: long vertical scroll, large sections */
+  .page{min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:48px;padding:72px 6vw;}
+  header.topbar{
+    position:fixed;left:0;right:0;top:16px;margin:auto;max-width:var(--maxwidth);height:62px;
+    display:flex;align-items:center;justify-content:space-between;padding:8px 18px;border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter:blur(18px) saturate(160%);box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:60;
+    transition:transform .18s ease,opacity .18s;
+  }
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand .logo{
+    width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#021;box-shadow:0 10px 30px rgba(0,208,122,0.08)
+  }
+  .brand h1{font-size:18px;margin:0}
+  .top-actions{display:flex;gap:10px;align-items:center}
+  .top-actions input[type=search]{width:320px;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:rgba(0,0,0,0.45);color:inherit}
+  .glass-section{
+    width:min(var(--maxwidth),96%);border-radius:var(--card-radius);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(30px) saturate(160%);
+    box-shadow:var(--shadow);
+    padding:40px;
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+  }
+
+  /* Layout: Left column (content) and right inspector pinned but as tall card that scrolls with page */
+  .layout{display:flex;gap:28px;width:100%}
+  .content{flex:1;display:flex;flex-direction:column;gap:20px}
+  .inspector{width:380px;min-width:280px;max-width:380px;align-self:flex-start;position:sticky;top:110px;height:fit-content}
+
+  /* Cards and inputs */
+  .card{
+    border-radius:18px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .hero{display:flex;flex-direction:column;gap:12px}
+  h2{font-size:22px;margin:0}
+  p.lead{color:var(--muted);max-width:820px}
+  .toolbar{display:flex;gap:12px;align-items:center;margin-top:8px}
+  .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer;font-weight:700}
+  .btn.primary{background:linear-gradient(180deg,var(--accent-start),var(--accent-end));color:#021;border:none;box-shadow:0 8px 28px rgba(0,208,122,0.06)}
+  .btn.ghost{background:rgba(255,255,255,0.02)}
+  .input, textarea{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);background:rgba(0,0,0,0.45);color:inherit;font-size:14px}
+  textarea{min-height:96px;resize:vertical}
+
+  /* Vault list (clean, single column) */
+  .vault-list{display:flex;flex-direction:column;gap:12px;max-height:66vh;overflow:auto;padding-right:8px}
+  .entry{
+    display:flex;justify-content:space-between;gap:12px;padding:14px;border-radius:12px;align-items:center;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    border:1px solid rgba(255,255,255,0.02);
+    transition:transform .12s,box-shadow .12s;
+  }
+  .entry:hover{transform:translateY(-6px);box-shadow:0 14px 42px rgba(0,0,0,0.55)}
+  .entry .meta{display:flex;flex-direction:column}
+  .entry .title{font-weight:700}
+  .badge{padding:6px 10px;border-radius:999px;background:rgba(0,208,122,0.12);color:var(--accent);font-weight:700;font-size:13px}
+
+  /* Inspector */
+  .inspector .card{padding:18px;border-radius:16px}
+  .inspector h3{margin:0 0 8px 0}
+  .tog{display:flex;gap:8px;align-items:center}
+  .small{font-size:13px;color:var(--muted)}
+  .secret-box{background:rgba(255,255,255,0.02);padding:12px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);word-break:break-all}
+
+  /* modal */
+  .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100;visibility:hidden;opacity:0;transition:opacity .12s}
+  .modal.show{visibility:visible;opacity:1}
+  .modal-card{width:680px;max-width:94%;border-radius:16px;padding:18px;background:linear-gradient(180deg,#061218,#07121a);border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 70px rgba(0,0,0,0.7)}
+
+  /* micro */
+  .muted{color:var(--muted)}
+  .flex{display:flex;align-items:center;gap:8px}
+  .right{margin-left:auto}
+  footer{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
+
+  /* responsive */
+  @media (max-width:1080px){
+    .layout{flex-direction:column-reverse}
+    .inspector{position:static;width:100%}
+    header.topbar{left:10px;right:10px}
+    .top-actions input[type=search]{width:180px}
+  }
+</style>
+</head>
+<body>
+<div id="global-loader">
+  <div class="container"></div>
+</div>
+  <!-- Header (sticky glass) -->
+  <header class="topbar" aria-label="Aden topbar">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <h1>Aden Security</h1>
+        <div class="small">Zero-knowledge vault • Demo</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <input id="globalSearch" type="search" placeholder="Buscar título, email..." aria-label="Buscar"/>
+      <button id="btnNew" class="btn primary">+ Nuevo</button>
+    </div>
+  </header>
+
+  <!-- Page body (sections scroll) -->
+  <div class="page" role="main" aria-label="Aden vault">
+
+    <!-- HERO / Intro -->
+    <section class="glass-section card hero" aria-label="introduccion">
+      <div class="content-left">
+        <h2>Aden Security esta creado para usarse <b>sin conexion y es recomedable usarse asi</b></h2>
+        <p class="lead">No uses esto en producción sin auditoría, no guardes informacion muy delicada, <b>Aden Security no es perfecto contra ataques directos, caso contrario es perfecto</b></p>
+        <div class="toolbar">
+          <button id="btnLoadDemo" class="btn ghost">Cargar demo</button>
+          <button id="btnExport" class="btn">Exportar backup</button>
+          <button id="btnImport" class="btn">Importar backup</button>
+          <div class="right muted">Sesión: <span id="sessionState">cerrada</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="glass-section">
+      <div class="layout" style="width:100%">
+
+        <!-- Left: content -->
+        <div class="content">
+
+          <div class="card" aria-label="panel control">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div>
+                <div class="small">Cuenta asociada</div>
+                <input id="emailInput" class="input" placeholder="email@dominio.com" />
+              </div>
+              <div style="min-width:240px">
+                <div class="small">Contraseña maestra</div>
+                <input id="masterInput" class="input" type="password" placeholder="Contraseña maestra (no se guarda)" />
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                <button id="unlockBtn" class="btn primary">Abrir sesión</button>
+                <button id="lockBtn" class="btn" title="Cerrar sesión">Cerrar sesión</button>
+              </div>
+            </div>
+            <div style="margin-top:10px" class="small muted">Derivación: PBKDF2 (demo). Recomendado en producción: Argon2id + servidor seguro.</div>
+          </div>
+
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <h3 style="margin:0">Bóveda</h3>
+              <div class="small muted">Entradas: <span id="count">0</span></div>
+            </div>
+            <div style="height:12px"></div>
+
+            <!-- create quick form -->
+            <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
+              <input id="quickTitle" class="input" placeholder="Título (ej: Gmail)" style="flex:1"/>
+              <input id="quickUser" class="input" placeholder="Usuario / email" style="width:320px"/>
+            </div>
+            <textarea id="quickSecret" class="input" placeholder="Contraseña / secreto"></textarea>
+            <div style="display:flex;gap:10px;margin-top:10px">
+              <button id="saveQuick" class="btn primary">Guardar</button>
+              <button id="genPwd" class="btn">Generar contraseña</button>
+              <div class="small muted right">Protección por entrada: AES-GCM</div>
+            </div>
+
+            <div style="height:18px"></div>
+            <div class="vault-list card" id="vaultList" aria-live="polite"></div>
+          </div>
+
+        </div>
+
+        <!-- Right: inspector -->
+        <aside class="inspector">
+          <div class="card">
+            <h3 id="inspTitle">Inspector</h3>
+            <div style="margin-top:10px">
+              <div class="small muted">URL</div>
+              <input id="inspUrl" class="input" placeholder="https://..." />
+              <div class="small muted" style="margin-top:8px">Usuario / email</div>
+              <input id="inspUser" class="input" placeholder="usuario@..." />
+              <div class="small muted" style="margin-top:8px">Nota</div>
+              <textarea id="inspNote" class="input"></textarea>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <button id="inspSave" class="btn primary">Guardar cambios</button>
+                <button id="inspSetSecret" class="btn">Establecer secreto</button>
+                <button id="inspView" class="btn">Ver (reauth)</button>
+              </div>
+
+              <hr style="margin:12px 0;border:0;border-top:1px solid rgba(255,255,255,0.03)">
+
+              <div class="small muted">TOTP (2FA) — por entrada</div>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <button id="inspGenTotp" class="btn">Generar secreto TOTP</button>
+                <div id="inspTotp" class="small muted">—</div>
+              </div>
+              <div style="margin-top:8px" class="small muted">QR / Copiar para añadir a Google Authenticator u otra app</div>
+              <div id="qrCanvas" style="margin-top:8px"></div>
+
+            </div>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="card">
+            <h4>Acciones avanzadas</h4>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+              <button id="btnExportAll" class="btn">Exportar (cifrado)</button>
+              <button id="btnImportAll" class="btn">Importar</button>
+              <button id="btnClear" class="btn">Borrar todo (IDB)</button>
+            </div>
+            <div style="height:8px"></div>
+            <div class="small muted">Nota: export/import generan un archivo cifrado que solo tu masterpass puede abrir.</div>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <footer>
+      Aden Security — Demo • No usar en producción sin auditoría | UI estilo iOS cristal templado
+    </footer>
+  </div>
+
+  <!-- modal for reauth/display -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div id="modalTitle">Re-autenticación</div>
+        <button id="modalClose" class="btn">Cerrar</button>
+      </div>
+      <div id="modalBody" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+<script>
+/* ============== Utilities & helpers ============== */
+const u8 = s => new TextEncoder().encode(s);
+const sText = b => new TextDecoder().decode(b || new Uint8Array());
+const bufToB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const b64ToBuf = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const rnd = n => { const a=new Uint8Array(n); crypto.getRandomValues(a); return a; };
+
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg, t=2600){ const el=document.createElement('div'); el.textContent=msg; Object.assign(el.style,{position:'fixed',right:'22px',bottom:'22px',background:'#021519',padding:'10px 14px',borderRadius:'10px',boxShadow:'0 6px 26px rgba(0,0,0,0.6)',zIndex:999}); document.body.appendChild(el); setTimeout(()=>el.remove(),t); }
+
+/* ================= IndexedDB wrapper ================= */
+const DB_NAME = 'aden_vault_db_v2', STORE='entries';
+function openDB(){
+  return new Promise((res,rej)=>{
+    const rq = indexedDB.open(DB_NAME,1);
+    rq.onupgradeneeded = e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(STORE)){
+        const os = db.createObjectStore(STORE,{keyPath:'id'});
+        os.createIndex('byEmail','email',{unique:false});
+      }
+    };
+    rq.onsuccess = ()=>res(rq.result);
+    rq.onerror = e=>rej(e.target.error);
+  });
+}
+async function idbAll(){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readonly'); const cur=tx.objectStore(STORE).openCursor(); const out=[]; cur.onsuccess=e=>{ const c=e.target.result; if(c){ out.push(c.value); c.continue(); } else res(out); } ; cur.onerror=e=>rej(e.target.error); }); }
+async function idbPut(obj){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(obj); tx.oncomplete=()=>res(true); tx.onerror=e=>rej(e.target.error); }); }
+async function idbGet(id){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readonly'); const req=tx.objectStore(STORE).get(id); req.onsuccess=()=>res(req.result); req.onerror=e=>rej(e.target.error); }); }
+async function idbDel(id){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id); tx.oncomplete=()=>res(true); tx.onerror=e=>rej(e.target.error); }); }
+async function idbClear(){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).clear(); tx.oncomplete=()=>res(true); tx.onerror=e=>rej(e.target.error); }); }
+
+/* ================= Crypto primitives ================= */
+/* PBKDF2 -> AES-GCM (demo). In prod: Argon2id, server salts and HSM recommended. */
+async function deriveKeyPBKDF2(password, saltB64, iterations=200000){
+  const salt = b64ToBuf(saltB64);
+  const base = await crypto.subtle.importKey('raw', u8(password), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt, iterations, hash:'SHA-256'},
+    base,
+    {name:'AES-GCM', length:256},
+    false,
+    ['encrypt','decrypt']
+  );
+  return key;
+}
+async function aesGcmEncrypt(key, data){
+  const iv = rnd(12);
+  const plain = (typeof data === 'string') ? data : JSON.stringify(data);
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, u8(plain));
+  return { iv: bufToB64(iv), ciphertext: bufToB64(ct) };
+}
+async function aesGcmDecrypt(key, meta){
+  const iv = b64ToBuf(meta.iv), ct = b64ToBuf(meta.ciphertext);
+  const dec = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct);
+  const txt = sText(dec);
+  try{ return JSON.parse(txt); } catch(e){ return txt; }
+}
+
+/* ================= TOTP (RFC6238) using HMAC-SHA1 ================= */
+async function hmacSha1(keyBytes, msgBytes){
+  const key = await crypto.subtle.importKey('raw', keyBytes, {name:'HMAC', hash:'SHA-1'}, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', key, msgBytes);
+  return new Uint8Array(sig);
+}
+function intToBytes(n){
+  const b=new ArrayBuffer(8); const dv=new DataView(b);
+  // high 32
+  dv.setUint32(0, Math.floor(n/0x100000000));
+  dv.setUint32(4, n >>> 0);
+  return new Uint8Array(b);
+}
+function hotp(hmacResult, digits=6){
+  const offset = hmacResult[hmacResult.length-1] & 0xf;
+  const bin = ((hmacResult[offset] & 0x7f) << 24) |
+              ((hmacResult[offset+1] & 0xff) << 16) |
+              ((hmacResult[offset+2] & 0xff) << 8) |
+              (hmacResult[offset+3] & 0xff);
+  const code = bin % (10 ** digits);
+  return code.toString().padStart(digits,'0');
+}
+async function generateTOTPWithCounter(secretB64, counter, digits=6){
+  const secret = b64ToBuf(secretB64);
+  const msg = intToBytes(counter);
+  const h = await hmacSha1(secret, msg);
+  return hotp(h, digits);
+}
+async function verifyTOTP_impl(secretB64, code, window=1){
+  const timeStep=30;
+  const counter = Math.floor(Date.now()/1000/timeStep);
+  for(let i=-window;i<=window;i++){
+    const c = await generateTOTPWithCounter(secretB64, counter + i, code.length);
+    if(c === code) return true;
+  }
+  return false;
+}
+async function generateCurrentTOTP(secretB64){ return generateTOTPWithCounter(secretB64, Math.floor(Date.now()/1000/30), 6); }
+
+/* ========= helpers: Base32 conversion (for authenticator apps) ========= */
+/* Basic Base32 (RFC4648) encode for compatibility: we will use base32 from base64 secret */
+const BASE32_ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+function base64ToBase32(b64){
+  const bytes = b64ToBuf(b64);
+  let bits = 0, value = 0, output='';
+  for(let i=0;i<bytes.length;i++){
+    value = (value << 8) | bytes[i];
+    bits += 8;
+    while(bits >= 5){
+      output += BASE32_ALPH[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+  if(bits > 0) output += BASE32_ALPH[(value << (5 - bits)) & 31];
+  while(output.length % 8 !==0) output += '=';
+  return output;
+}
+
+/* ================= Session state & helpers ================= */
+let session = { email:null, masterKey:null, salt:null, iterations:200000, derived:false };
+async function deriveMasterSession(password){
+  const salt = bufToB64(rnd(16)); // ephemeral for demo; prod: stable per-account salt
+  const key = await deriveKeyPBKDF2(password, salt, session.iterations);
+  session.masterKey = key; session.masterSalt = salt; session.derived = true;
+  document.getElementById('sessionState').textContent = 'abierta';
+  toast('Sesión abierta');
+}
+
+/* ================= Vault operations ================= */
+async function createEntry({title,url,user,note,secretPlain, email, totpSecretB64=null}){
+  const salt = bufToB64(rnd(16));
+  const obj = {
+    id: crypto.randomUUID(),
+    title: title || 'Sin título',
+    url: url || '',
+    user: user || '',
+    note: note || '',
+    email: email || null,
+    totpSecret: totpSecretB64 || null,
+    meta: { salt }, createdAt: Date.now(), updatedAt: Date.now()
+  };
+  // encrypt secret with session.masterKey
+  if(!session.derived || !session.masterKey) throw new Error('Master key no derivada');
+  const cipher = await aesGcmEncrypt(session.masterKey, { secret: secretPlain || '' });
+  obj.meta = {...obj.meta, ...cipher, kdf:'PBKDF2', iterations: session.iterations};
+  await idbPut(obj);
+  return obj;
+}
+
+/* ================= UI wiring & flows ================= */
+const q = sel => document.querySelector(sel);
+const vaultListEl = q('#vaultList');
+
+async function refreshList(){
+  const all = await idbAll();
+  const search = (q('#globalSearch').value||'').trim().toLowerCase();
+  const filtered = all.filter(it=>{
+    if(!search) return true;
+    return it.title.toLowerCase().includes(search) || (it.user||'').toLowerCase().includes(search) || (it.email||'').toLowerCase().includes(search);
+  }).sort((a,b)=>b.updatedAt - a.updatedAt);
+  vaultListEl.innerHTML = '';
+  filtered.forEach(it=>{
+    const el = document.createElement('div'); el.className='entry';
+    el.innerHTML = `<div class="meta"><div class="title">${escapeHtml(it.title)}</div><div class="small muted">${escapeHtml(it.user||it.email||it.url||'')}</div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="badge">${it.totpSecret? '2FA':'No 2FA'}</div>
+        <button class="btn" data-id="${it.id}" data-action="view">Ver</button>
+        <button class="btn" data-id="${it.id}" data-action="copy">Copiar</button>
+      </div>`;
+    // delegate click events
+    el.querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click', async (ev)=>{
+        const id=b.dataset.id, action=b.dataset.action;
+        if(action==='view') return window.aden.viewEntry(id);
+        if(action==='copy') return window.aden.quickCopy(id);
+      });
+    });
+    vaultListEl.appendChild(el);
+  });
+  q('#count').textContent = filtered.length;
+}
+
+/* load inspector record */
+let openInspectorId = null;
+async function loadInspector(id){
+  const it = await idbGet(id);
+  if(!it) return;
+  openInspectorId = id;
+  q('#inspTitle').textContent = it.title;
+  q('#inspUrl').value = it.url || '';
+  q('#inspUser').value = it.user || '';
+  q('#inspNote').value = it.note || '';
+  q('#inspTotp').textContent = it.totpSecret ? '(TOTP configurado)' : '(sin TOTP)';
+  // qr cleared
+  q('#qrCanvas').innerHTML = '';
+}
+
+/* save inspector edits */
+q('#inspSave').addEventListener('click', async ()=>{
+  if(!openInspectorId) return toast('Selecciona una entrada primero');
+  const it = await idbGet(openInspectorId);
+  it.url = q('#inspUrl').value.trim();
+  it.user = q('#inspUser').value.trim();
+  it.note = q('#inspNote').value.trim();
+  it.updatedAt = Date.now();
+  await idbPut(it);
+  await refreshList();
+  toast('Entrada actualizada');
+});
+
+/* generate TOTP secret for current inspector */
+q('#inspGenTotp').addEventListener('click', async ()=>{
+  if(!openInspectorId) return toast('Selecciona una entrada primero');
+  const it = await idbGet(openInspectorId);
+  if(it.totpSecret){
+    if(!confirm('Quitar TOTP de esta entrada?')) return;
+    it.totpSecret = null; await idbPut(it); await refreshList(); loadInspector(openInspectorId); toast('TOTP eliminado');
+    q('#qrCanvas').innerHTML='';
+    return;
+  }
+  const secret = bufToB64(rnd(20)); // base64 secret
+  it.totpSecret = secret;
+  await idbPut(it); await refreshList(); loadInspector(openInspectorId);
+  // show QR using otpauth url (Base32 label for compat)
+  const label = encodeURIComponent(`${session.email||'user'}:${it.title}`);
+  const secretB32 = base64ToBase32(secret).replace(/=+$/,''); // remove padding
+  const otpauth = `otpauth://totp/${label}?secret=${secretB32}&issuer=${encodeURIComponent('Aden Security')}&algorithm=SHA1&digits=6&period=30`;
+  q('#qrCanvas').innerHTML = ''; // render QR
+  if(window.QRCode){
+    QRCode.toCanvas(otpauth, {width:140}, function(err, canvas){
+      if(err) { q('#qrCanvas').textContent = 'QR error'; return; }
+      q('#qrCanvas').appendChild(canvas);
+    });
+  } else {
+    const a = document.createElement('div'); a.textContent = otpauth; q('#qrCanvas').appendChild(a);
+  }
+  toast('TOTP generado — escanea el QR o copia la clave Base32');
+});
+
+/* set secret for inspector (opens small modal) */
+q('#inspSetSecret').addEventListener('click', ()=>{
+  if(!openInspectorId) return toast('Selecciona una entrada primero');
+  openModal('Establecer secreto', `<div>
+    <div class="small muted">Introduce la contraseña/secret para esta entrada</div>
+    <input id="modalSecret" class="input" placeholder="Secreto..."/>
+    <div style="display:flex;gap:8px;margin-top:12px"><button id="modalSaveSecret" class="btn primary">Guardar</button><button id="modalCancel" class="btn">Cancelar</button></div>
+  </div>`);
+  q('#modalCancel').onclick = closeModal;
+  document.getElementById('modalSaveSecret').onclick = async ()=>{
+    const v = q('#modalSecret').value || '';
+    const it = await idbGet(openInspectorId);
+    // re-encrypt secret with session.masterKey
+    try{
+      const cipher = await aesGcmEncrypt(session.masterKey, {secret:v});
+      it.meta = {...it.meta, ...cipher};
+      it.updatedAt = Date.now();
+      await idbPut(it);
+      closeModal();
+      await refreshList();
+      toast('Secreto establecido');
+    }catch(err){ alert('Error al cifrar: ' + err.message); }
+  };
+});
+
+/* quick create */
+q('#saveQuick').addEventListener('click', async ()=>{
+  const title = q('#quickTitle').value.trim(); const user = q('#quickUser').value.trim(); const secret = q('#quickSecret').value;
+  if(!title) return alert('Título requerido');
+  if(!session.derived) return alert('Abre sesión con tu master password primero');
+  try{
+    await createEntry({title, user, secretPlain:secret, email: q('#emailInput').value.trim() || null});
+    q('#quickTitle').value=''; q('#quickUser').value=''; q('#quickSecret').value='';
+    await refreshList();
+    toast('Entrada creada');
+  }catch(e){ alert(e.message); }
+});
+
+/* generate password utility */
+q('#genPwd').addEventListener('click', ()=>{
+  const p = generatePassword(20);
+  q('#quickSecret').value = p;
+  toast('Contraseña generada');
+});
+
+/* view entry (reauth flow) */
+window.aden = window.aden || {};
+window.aden.viewEntry = async function(id){
+  const it = await idbGet(id); if(!it) return alert('No existe');
+  openModal('Ver secreto — verificación', `<div>
+    <div class="tiny muted">Puedes usar la contraseña maestra o un código TOTP (si está activado)</div>
+    <div style="margin-top:10px"><input id="reauth_pass" placeholder="Contraseña maestra" class="input" /></div>
+    <div style="margin-top:8px"><input id="reauth_totp" placeholder="Código TOTP (6 dígitos)" class="input" /></div>
+    <div style="display:flex;gap:8px;margin-top:12px"><button id="reauth_ok" class="btn primary">Ver</button><button id="reauth_cancel" class="btn">Cancelar</button></div>
+  </div>`);
+  q('#reauth_cancel').onclick = closeModal;
+  q('#reauth_ok').onclick = async ()=>{
+    const pass = q('#reauth_pass').value; const totp = q('#reauth_totp').value.trim();
+    let ok=false;
+    if(it.totpSecret && totp){
+      try{ if(await verifyTOTP_impl(it.totpSecret, totp, 1)) ok = true; } catch(e){}
+    }
+    if(!ok && pass){
+      try{
+        const key = await deriveKeyPBKDF2(pass, it.meta.salt, it.meta.iterations || session.iterations);
+        const p = await aesGcmDecrypt(key, it.meta);
+        showSecretModal(it.title, p.secret || '');
+        return;
+      }catch(e){}
+    }
+    if(!ok && session.derived && session.masterKey){
+      try{
+        const p2 = await aesGcmDecrypt(session.masterKey, it.meta);
+        showSecretModal(it.title, p2.secret || '');
+        return;
+      }catch(e){}
+    }
+    alert('Verificación falló. Comprueba TOTP o la contraseña maestra.');
+    closeModal();
+  };
+};
+function showSecretModal(title, secret){
+  openModal('Secreto: ' + escapeHtml(title), `<div>
+    <div class="small muted">Título: ${escapeHtml(title)}</div>
+    <pre style="margin-top:10px;background:rgba(255,255,255,0.02);padding:12px;border-radius:10px">${escapeHtml(secret)}</pre>
+    <div style="display:flex;gap:8px;margin-top:10px"><button id="copySecretBtn" class="btn primary">Copiar</button><button id="closeSecretBtn" class="btn">Cerrar</button></div>
+  </div>`);
+  q('#copySecretBtn').onclick = async ()=>{ await navigator.clipboard.writeText(secret||''); toast('Copiado al portapapeles'); };
+  q('#closeSecretBtn').onclick = closeModal;
+}
+
+/* quick copy */
+window.aden.quickCopy = async function(id){
+  const it = await idbGet(id); if(!it) return;
+  if(session.derived && session.masterKey){
+    try{
+      const p = await aesGcmDecrypt(session.masterKey, it.meta);
+      await navigator.clipboard.writeText(p.secret || '');
+      toast('Secreto copiado');
+      return;
+    }catch(e){}
+  }
+  const pwd = prompt('Introduce contraseña maestra para copiar:'); if(!pwd) return;
+  try{
+    const key = await deriveKeyPBKDF2(pwd, it.meta.salt, it.meta.iterations || session.iterations);
+    const p = await aesGcmDecrypt(key, it.meta);
+    await navigator.clipboard.writeText(p.secret || '');
+    toast('Copiado');
+  }catch(e){ alert('Error o contraseña incorrecta'); }
+};
+
+/* ===== Export / Import encrypted backup ===== */
+q('#btnExportAll').addEventListener('click', async ()=>{
+  if(!session.derived) return alert('Abre sesión antes de exportar');
+  try{
+    const all = await idbAll();
+    const backupSalt = bufToB64(rnd(16));
+    const pwd = prompt('Confirma la contraseña maestra para cifrar el backup:');
+    if(!pwd) return;
+    const wrapKey = await deriveKeyPBKDF2(pwd, backupSalt, session.iterations);
+    const payload = await aesGcmEncrypt(wrapKey, JSON.stringify(all));
+    const out = { meta: payload, wrapSalt: backupSalt, iterations: session.iterations, createdAt: Date.now() };
+    const blob = new Blob([JSON.stringify(out, null,2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aden-backup.json'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    toast('Backup exportado (archivo cifrado)');
+  }catch(e){ alert('Export falló: '+e.message); }
+});
+q('#btnImportAll').addEventListener('click', ()=>{ document.getElementById('btnImportAll').disabled = true; const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json'; inp.onchange=async(e)=>{ const f=e.target.files[0]; if(!f) return; const txt=await f.text(); const parsed=JSON.parse(txt); const pwd=prompt('Introduce contraseña maestra para importar backup'); if(!pwd) return; try{ const wrapKey=await deriveKeyPBKDF2(pwd, parsed.wrapSalt, parsed.iterations); const raw=await aesGcmDecrypt(wrapKey, parsed.meta); const arr=JSON.parse(raw); for(const it of arr){ await idbPut(it); } await refreshList(); toast('Backup importado'); }catch(err){ alert('Import falló: '+err.message); } finally{ document.getElementById('btnImportAll').disabled=false; } }; inp.click(); });
+
+/* BTN import / export of topbar (duplicate handlers) */
+q('#btnExport').addEventListener('click', ()=> q('#btnExportAll').click());
+q('#btnImport').addEventListener('click', ()=> q('#btnImportAll').click());
+
+/* Clear DB */
+q('#btnClear').addEventListener('click', async ()=>{ if(!confirm('Borrar todo el contenido local (IDB)?')) return; await idbClear(); await refreshList(); toast('IDB limpiado'); });
+
+/* unlock/derive session */
+q('#unlockBtn').addEventListener('click', async ()=>{
+  const email = q('#emailInput').value.trim(); const pass = q('#masterInput').value;
+  if(!email || !pass) return alert('Email y contraseña maestra obligatorios');
+  try{ await deriveMasterSession(pass); session.email = email; q('#metaSession').textContent = email; }catch(e){ alert('Derivación falló: '+e.message); }
+});
+q('#lockBtn').addEventListener('click', ()=>{ session={email:null,masterKey:null,derived:false,iterations:200000}; document.getElementById('sessionState').textContent='cerrada'; toast('Sesión cerrada'); });
+
+/* modal helpers */
+const modal = q('#modal'); const modalBody = q('#modalBody'); const modalTitle = q('#modalTitle');
+function openModal(title, html){
+  modalTitle.textContent = title; modalBody.innerHTML = html; modal.classList.add('show');
+}
+function closeModal(){ modal.classList.remove('show'); modalBody.innerHTML=''; }
+q('#modalClose').addEventListener('click', closeModal);
+
+/* load demo dataset */
+q('#btnLoadDemo').addEventListener('click', async ()=>{
+  if(!confirm('Cargar datos de demostración? Esto añadirá entradas al IDB local.')) return;
+  // quick demo entries
+  const demo = [
+    {title:'Gmail personal', user:'usuario@gmail.com', secret:'MiPass123!'},
+    {title:'Banco demo', user:'cuenta@banco', secret:'B@nco$ecret!'},
+    {title:'AWS root', user:'root@aws', secret:'AwS-S3cr3t-!'}
+  ];
+  if(!session.derived) { alert('Abre sesión antes de crear demo entries.'); return; }
+  for(const d of demo){
+    await createEntry({title:d.title,user:d.user,secretPlain:d.secret,email: q('#emailInput').value.trim()||null});
+  }
+  await refreshList(); toast('Demo cargado');
+});
+
+/* search wiring */
+q('#globalSearch').addEventListener('input', ()=> refreshList());
+
+/* init */
+(async ()=>{ await refreshList(); })();
+
+/* ============ Small utilities ============ */
+function generatePassword(length=20, opts={lower:true,upper:true,digits:true,symbols:true}){
+  const lower='abcdefghijklmnopqrstuvwxyz', upper='ABCDEFGHIJKLMNOPQRSTUVWXYZ', digits='0123456789', symbols='!@#$%^&*()-_+=~';
+  let pool=''; if(opts.lower) pool+=lower; if(opts.upper) pool+=upper; if(opts.digits) pool+=digits; if(opts.symbols) pool+=symbols;
+  let out=''; const r=new Uint32Array(length); crypto.getRandomValues(r);
+  for(let i=0;i<length;i++) out += pool[r[i] % pool.length];
+  return out;
+}
+
+/* ============ End of script ============ */
+</script>
+<script>
+setTimeout(() => {
+  const gl = document.getElementById("global-loader");
+  gl.style.opacity = "0";
+  setTimeout(() => gl.remove(), 600);
+}, 5000); // 5 segundos exactos
+</script>
+</body>
+</html>
+
